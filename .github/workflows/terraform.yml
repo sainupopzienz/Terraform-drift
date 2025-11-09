@@ -1,0 +1,52 @@
+name: Terraform Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::196024211776:role/GitHubActionsRole
+        role-session-name: GitHubActions-Terraform
+        aws-region: us-east-1
+        
+    - name: Terraform Init
+      run: terraform init
+      
+    - name: Check for Drift
+      run: |
+        terraform plan -detailed-exitcode
+        if [ $? -eq 2 ]; then
+          echo "::error::Drift detected! Fix drift before deploying."
+          exit 1
+        fi
+      
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply -auto-approve
+      
+    - name: Setup Drift Monitoring
+      if: github.ref == 'refs/heads/main'
+      run: |
+        curl -o setup-drift-monitoring.sh https://raw.githubusercontent.com/sainudeensafar/aws-drift-monitoring-docs/main/alert-configs/setup-drift-monitoring.sh
+        chmod +x setup-drift-monitoring.sh
+        # Update email in script
+        sed -i 's/your-email@example.com/sainusainu514@gmail.com/g' setup-drift-monitoring.sh
+        ./setup-drift-monitoring.sh
