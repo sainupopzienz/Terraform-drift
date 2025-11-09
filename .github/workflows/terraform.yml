@@ -10,6 +10,14 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  SNS_TOPIC_ARN: arn:aws:sns:us-east-1:196024211776:drift-alerts
+  S3_BUCKET_NAME: cloudtrail-drift-logs-196024211776
+  CLOUDTRAIL_NAME: drift-trail
+  EVENTBRIDGE_RULE: drift-rule
+  AWS_REGION: us-east-1
+  AWS_ACCOUNT_ID: 196024211776
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -41,12 +49,3 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve
-      
-    - name: Setup Drift Monitoring
-      if: github.ref == 'refs/heads/main'
-      run: |
-        curl -o setup-drift-monitoring.sh https://raw.githubusercontent.com/sainudeensafar/aws-drift-monitoring-docs/main/alert-configs/setup-drift-monitoring.sh
-        chmod +x setup-drift-monitoring.sh
-        # Update email in script
-        sed -i 's/your-email@example.com/sainusainu514@gmail.com/g' setup-drift-monitoring.sh
-        ./setup-drift-monitoring.sh

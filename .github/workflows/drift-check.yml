@@ -9,6 +9,14 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  SNS_TOPIC_ARN: arn:aws:sns:us-east-1:196024211776:drift-alerts
+  S3_BUCKET_NAME: cloudtrail-drift-logs-196024211776
+  CLOUDTRAIL_NAME: drift-trail
+  EVENTBRIDGE_RULE: drift-rule
+  AWS_REGION: us-east-1
+  AWS_ACCOUNT_ID: 196024211776
+
 jobs:
   drift-check:
     runs-on: ubuntu-latest
