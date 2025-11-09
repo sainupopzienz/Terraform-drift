@@ -1,8 +1,7 @@
-# Uncomment and configure for remote state
-# terraform {
-#   backend "s3" {
-#     bucket = "your-terraform-state-bucket"
-#     key    = "terraform-drift-test/terraform.tfstate"
-#     region = "us-east-1"
-#   }
-# }
+terraform {
+  backend "s3" {
+    bucket = "terraform-state-196024211776"
+    key    = "terraform-drift-test/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
