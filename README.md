@@ -124,4 +124,4 @@ Source IP: 203.0.113.12
 └── backend.tf            # State backend config
 ```
 
-<!-- Last updated: 2024-11-09 - CONFIRMED drift detection working! -->
+<!-- Last updated: 2024-11-09 - DRIFT CREATED NOW - should fail! -->
