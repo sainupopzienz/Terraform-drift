@@ -1,8 +1,14 @@
+resource "random_string" "suffix" {
+  length  = 8
+  special = false
+  upper   = false
+}
+
 resource "aws_s3_bucket" "main" {
-  bucket = var.bucket_name
+  bucket = "${var.bucket_name}-${random_string.suffix.result}"
 
   tags = merge(var.tags, {
-    Name = var.bucket_name
+    Name = "${var.bucket_name}-${random_string.suffix.result}"
   })
 }
 

@@ -31,7 +31,7 @@ variable "private_subnet_cidrs" {
 variable "s3_bucket_name" {
   description = "Name of the S3 bucket"
   type        = string
-  default     = "terraform-drift-test-bucket-12345"
+  default     = "terraform-drift-test-bucket"
 }
 
 variable "instance_type" {
